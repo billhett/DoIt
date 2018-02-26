@@ -24,10 +24,13 @@ class CreateTaskViewController: UIViewController {
 
     @IBAction func addTapped(_ sender: Any) {
         //create a task from outlet info
-        let task = Task()
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let task = Task(context: context)
         task.name = taskNameTextField.text!
 
         task.important = importantSwitch.isOn
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        
         print("item is \(task.name) and important is \(task.important)")
         //add new task to tasks array in previous vc
         previousVC.tasks.append(task)

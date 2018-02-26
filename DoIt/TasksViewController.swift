@@ -17,8 +17,6 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tasks = makeTasks()
-        
         tableView.dataSource = self
         tableView.delegate = self
         print("tasks array is :\(tasks)")
@@ -52,17 +50,7 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         performSegue(withIdentifier: "selectTaskSegue", sender: task)
     }
     
-    func makeTasks() -> [Task]{
-        let task1 = Task()
-        task1.name = "Walk the Dog"
-        let task2 = Task()
-        task2.name = "Buy Cheese"
-        task2.important = true
-        let task3 = Task()
-        task3.name = "Mow the lawn"
-        
-        return [task1,task2,task3]
-    }
+  
     @IBAction func plusTapped(_ sender: Any) {
         performSegue(withIdentifier: "addSegue", sender: nil)
         
