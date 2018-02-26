@@ -18,7 +18,7 @@ class CreateTaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        importantSwitch.setOn(false, animated: false)
         // Do any additional setup after loading the view.
     }
 
