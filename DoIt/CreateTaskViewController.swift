@@ -14,7 +14,6 @@ class CreateTaskViewController: UIViewController {
     
     @IBOutlet weak var importantSwitch: UISwitch!
     
-    var previousVC = TasksViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,11 +30,6 @@ class CreateTaskViewController: UIViewController {
         task.important = importantSwitch.isOn
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
-        print("item is \(task.name) and important is \(task.important)")
-        //add new task to tasks array in previous vc
-        previousVC.tasks.append(task)
-        print("tasks array is now :\(previousVC.tasks)")
-        previousVC.tableView.reloadData()
         navigationController!.popViewController(animated: true)
     }
     override func didReceiveMemoryWarning() {

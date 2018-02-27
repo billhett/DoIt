@@ -11,7 +11,7 @@ import UIKit
 class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var tasks : [Task] = []
-    var selectedRow = 0
+
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -19,7 +19,12 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         tableView.dataSource = self
         tableView.delegate = self
-        print("tasks array is :\(tasks)")
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getTasks()
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -33,7 +38,7 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         task = tasks[indexPath.row]
         
         if task.important {
-            cell.textLabel?.text = "❗️ \(task.name)"
+            cell.textLabel?.text = "❗️ \(task.name!)"
             cell.backgroundColor = UIColor.yellow
         } else {
             cell.textLabel?.text = task.name
@@ -44,27 +49,33 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let task = tasks[indexPath.row]
-        print("selected item is \(task.name)")
-        selectedRow = indexPath.row
-        print("selected row is \(selectedRow)")
+        print("selected item is \(String(describing: task.name))")
+
         performSegue(withIdentifier: "selectTaskSegue", sender: task)
     }
     
-  
+    
     @IBAction func plusTapped(_ sender: Any) {
         performSegue(withIdentifier: "addSegue", sender: nil)
         
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "addSegue" {
-        let nextVC = segue.destination as! CreateTaskViewController
-        nextVC.previousVC = self
+    func getTasks() { //gets data from coreData
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        do {
+            tasks = try context.fetch(Task.fetchRequest()) as![Task]
+            print(tasks)
+        } catch {
+            print("error fetching: \(error)")
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "selectTaskSegue" {
             let nextVC = segue.destination as! CompleteTaskViewController
-            nextVC.previousVC = self
-            nextVC.task = sender as! Task
+
+            nextVC.task = sender as? Task
         }
     }
 }

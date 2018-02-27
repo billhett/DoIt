@@ -9,19 +9,18 @@
 import UIKit
 
 class CompleteTaskViewController: UIViewController {
-    var previousVC = TasksViewController()
-    var task = Task()
+    var task : Task? = nil
     @IBOutlet weak var taskLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //task = previousVC.tas
-        taskLabel.text = task.name
-        if task.important {
-            taskLabel?.text = "❗️ \(task.name)"
+        taskLabel.text = task!.name
+        if task!.important {
+            taskLabel?.text = "❗️ \(String(describing: task!.name!))"
             
         } else {
-            taskLabel?.text = task.name
+            taskLabel?.text = task!.name!
         }
     }
     
@@ -32,8 +31,7 @@ class CompleteTaskViewController: UIViewController {
     
     @IBAction func pressedItemCompleted(_ sender: UIButton) {
         print("task \(task) completed and deleted")
-        previousVC.tasks.remove(at: previousVC.selectedRow)
-        previousVC.tableView.reloadData()
+
         navigationController?.popViewController(animated: true)
     }
     
