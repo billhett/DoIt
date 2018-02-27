@@ -30,8 +30,10 @@ class CompleteTaskViewController: UIViewController {
     }
     
     @IBAction func pressedItemCompleted(_ sender: UIButton) {
-        print("task \(task) completed and deleted")
-
+        print("task \(String(describing: task)) completed and deleted")
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        context.delete(task!)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
         navigationController?.popViewController(animated: true)
     }
     
